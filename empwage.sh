@@ -22,15 +22,22 @@ function getWrkHrs() {
                            empHrs=0 ;;
    esac
    echo $empHrs
-
 }
+
+function getEmpwage() {
+	local empHrs=$1
+	echo $(( $empHrs*$dailyWagePerHrs ))
+}
+
 while [[ $totalWrkDays -lt $numOfDays && $totalEmpHrs -lt  $maxHrsInMonth ]]
 do
    ((totalWrkDays++))
    randomCheck=$(( RANDOM%3 ));
    empHrs="$( getWrkHrs $randomCheck )"
    totalEmpHrs=$(( $totalEmpHrs + $empHrs ))
+	dailywage[$totalWrkDays]="$( getEmpwage $empHrs )"
 done
    totalSalary=$(( $totalEmpHrs*$dailyWagePerHrs ))
    echo $totalSalary
+	echo ${dailywage[@]}
 
