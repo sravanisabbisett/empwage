@@ -3,9 +3,15 @@ dailyWagePerHrs=20
 numofDays=20
 isFullTime=2
 isPartTime=1
-for ((days=1; days<=$numofDays; days++))
+randomCheck=$(( RANDOM%3 ))
+
+maxHrsInMonth=100
+totalWrkDays=0
+totalEmpHrs=0
+
+while [[ $totalWrkDays -lt $numofDays && $totalEmpHrs -lt $maxHrsInMonth ]]
 do
-	randomCheck=$(( RANDOM%3 ))
+	((totalWrkDays++))
 	case $randomCheck in
 			$isFullTime)
 					empHrs=8 ;;
@@ -14,9 +20,7 @@ do
 			*)
 					empHrs=0 ;;
 	esac
-
-	salary=$(( $dailyWagePerHrs*$empHrs ))
-	echo $salary
-	totalsalary=$(( $totalsalary+$salary ))
-	echo $totalsalary
+   totalEmpHrs=$(( $totalEmpHrs + $empHrs ))
 done
+	totalsalary=$(( $totalEmpHrs+$dailyWagePerHrs ))
+	echo $totalsalary
