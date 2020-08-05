@@ -1,26 +1,36 @@
 #!/bin/bash -x
+
+
 dailyWagePerHrs=20
-numofDays=20
+numOfDays=20
 isFullTime=2
 isPartTime=1
 randomCheck=$(( RANDOM%3 ))
+maxHrsInMonth=20
 
-maxHrsInMonth=100
 totalWrkDays=0
 totalEmpHrs=0
 
-while [[ $totalWrkDays -lt $numofDays && $totalEmpHrs -lt $maxHrsInMonth ]]
+function getWrkHrs() {
+   local $randomCheck=$1
+   case $randomCheck in
+               $isFullTime)
+                           empHrs=8 ;;
+               $isPartTime)
+                           empHrs=4 ;;
+               *)
+                           empHrs=0 ;;
+   esac
+   echo $empHrs
+
+}
+while [[ $totalWrkDays -lt $numOfDays && $totalEmpHrs -lt  $maxHrsInMonth ]]
 do
-	((totalWrkDays++))
-	case $randomCheck in
-			$isFullTime)
-					empHrs=8 ;;
-			$isPartTime)
-					empHrs=4 ;;
-			*)
-					empHrs=0 ;;
-	esac
+   ((totalWrkDays++))
+   randomCheck=$(( RANDOM%3 ));
+   empHrs="$( getWrkHrs $randomCheck )"
    totalEmpHrs=$(( $totalEmpHrs + $empHrs ))
 done
-	totalsalary=$(( $totalEmpHrs+$dailyWagePerHrs ))
-	echo $totalsalary
+   totalSalary=$(( $totalEmpHrs*$dailyWagePerHrs ))
+   echo $totalSalary
+
